@@ -452,67 +452,59 @@ function finishDay() {
 }
 
 function renderHistory() {
-  const history = JSON.parse(localStorage.getItem('macro_history') || '[]');
-  const container = document.getElementById('historyContent');
-  if (!history.length) {
-    container.innerHTML = '<div class="history-empty"><div class="empty-icon">📅</div><div>No completed days yet.<br>Finish your first day to see it here.</div></div>';
-    return;
+  try {
+    const raw = localStorage.getItem('macro_history');
+    const container = document.getElementById('historyContent');
+    if (!raw) {
+      container.innerHTML = '<div class="history-empty"><div class="empty-icon">📅</div><div>No completed days yet.<br>Finish your first day to see it here.</div></div>';
+      return;
+    }
+    const history = JSON.parse(raw);
+    if (!history || !history.length) {
+      container.innerHTML = '<div class="history-empty"><div class="empty-icon">📅</div><div>No completed days yet.<br>Finish your first day to see it here.</div></div>';
+      return;
+    }
+    const parts = [];
+    history.forEach(function(day, idx) {
+      const badgeCls = day.avgPct >= 90 && day.avgPct <= 110 ? 'great' : day.avgPct >= 75 ? 'good' : 'miss';
+      const badgeTxt = day.avgPct >= 90 && day.avgPct <= 110 ? '✓ On target' : day.avgPct >= 75 ? '~ Close' : '✗ Off target';
+      const mealCount = day.meals ? day.meals.length : 0;
+      let mealsHtml = '';
+      if (day.meals && day.meals.length) {
+        day.meals.forEach(function(m) {
+          mealsHtml += '<div class="day-meal-item"><span class="day-meal-name">' + m.name + '</span><span class="day-meal-cal">' + m.cal + ' kcal</span></div>';
+        });
+      }
+      const calColor = day.calPct >= 90 && day.calPct <= 110 ? 'var(--green)' : day.calPct >= 75 ? 'var(--amber)' : 'var(--orange)';
+      const proColor = day.proPct >= 90 && day.proPct <= 110 ? 'var(--green)' : day.proPct >= 75 ? 'var(--amber)' : 'var(--orange)';
+      const carbColor = day.carbPct >= 90 && day.carbPct <= 110 ? 'var(--green)' : day.carbPct >= 75 ? 'var(--amber)' : 'var(--orange)';
+      const fatColor = day.fatPct >= 90 && day.fatPct <= 110 ? 'var(--green)' : day.fatPct >= 75 ? 'var(--amber)' : 'var(--orange)';
+      parts.push(
+        '<div class="day-card">' +
+          '<div class="day-card-header" onclick="toggleDay(' + idx + ')">' +
+            '<div class="day-card-left">' +
+              '<div class="day-date">' + day.dateLabel + '</div>' +
+              '<div class="day-summary">' + day.consumed.cal + ' cal · ' + mealCount + ' meal' + (mealCount !== 1 ? 's' : '') + '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              '<span class="day-badge ' + badgeCls + '">' + badgeTxt + '</span>' +
+              '<span class="day-chevron" id="chev-' + idx + '">▾</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="day-macros">' +
+            '<div class="day-macro"><div class="day-macro-val">' + day.consumed.cal + '</div><div class="day-macro-lbl">Calories</div><div class="day-macro-pct" style="color:' + calColor + '">' + day.calPct + '%</div></div>' +
+            '<div class="day-macro"><div class="day-macro-val">' + day.consumed.protein + 'g</div><div class="day-macro-lbl">Protein</div><div class="day-macro-pct" style="color:' + proColor + '">' + day.proPct + '%</div></div>' +
+            '<div class="day-macro"><div class="day-macro-val">' + day.consumed.carbs + 'g</div><div class="day-macro-lbl">Carbs</div><div class="day-macro-pct" style="color:' + carbColor + '">' + day.carbPct + '%</div></div>' +
+            '<div class="day-macro"><div class="day-macro-val">' + day.consumed.fat + 'g</div><div class="day-macro-lbl">Fat</div><div class="day-macro-pct" style="color:' + fatColor + '">' + day.fatPct + '%</div></div>' +
+          '</div>' +
+          '<div class="day-meals" id="meals-' + idx + '">' + mealsHtml + '</div>' +
+        '</div>'
+      );
+    });
+    container.innerHTML = parts.join('');
+  } catch(e) {
+    document.getElementById('historyContent').innerHTML = '<div class="history-empty"><div>Something went wrong loading history.</div><div style="font-size:12px;margin-top:8px;color:var(--text3)">' + e.message + '</div></div>';
   }
-
-  // Streak calc
-  let streak = 0;
-  const today = new Date().toDateString();
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  for (let i = 0; i < history.length; i++) {
-    const d = history[i];
-    if (i === 0 && (d.date === today || d.date === yesterday)) { streak++; }
-    else if (i > 0) {
-      const prev = new Date(history[i-1].date);
-      const curr = new Date(d.date);
-      const diff = Math.round((prev - curr) / 86400000);
-      if (diff === 1) streak++; else break;
-    } else break;
-  }
-
-  let html = '';
-  if (streak > 0) {
-    html += `<div class="streak-banner"><div class="streak-icon">🔥</div><div class="streak-text"><div class="streak-num">${streak} day streak</div><div class="streak-lbl">Keep it going!</div></div></div>`;
-  }
-
-  history.forEach((day, idx) => {
-    const badge = day.avgPct >= 90 && day.avgPct <= 110 ? { cls: 'great', txt: '✓ On target' } :
-                  day.avgPct >= 75 ? { cls: 'good', txt: '~ Close' } :
-                  { cls: 'miss', txt: '✗ Off target' };
-    html += `<div class="day-card">
-      <div class="day-card-header" onclick="toggleDay(${idx})">
-        <div class="day-card-left">
-          <div class="day-date">${day.dateLabel}</div>
-          <div class="day-summary">${day.consumed.cal} cal · ${day.meals.length} meal${day.meals.length !== 1 ? 's' : ''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="day-badge ${badge.cls}">${badge.txt}</span>
-          <span class="day-chevron" id="chev-${idx}">▾</span>
-        </div>
-      </div>
-      <div class="day-macros">
-        ${[
-          {lbl:'Calories', val:day.consumed.cal, pct:day.calPct, unit:''},
-          {lbl:'Protein', val:day.consumed.protein, pct:day.proPct, unit:'g'},
-          {lbl:'Carbs', val:day.consumed.carbs, pct:day.carbPct, unit:'g'},
-          {lbl:'Fat', val:day.consumed.fat, pct:day.fatPct, unit:'g'},
-        ].map(m => `<div class="day-macro">
-          <div class="day-macro-val">${m.val}${m.unit}</div>
-          <div class="day-macro-lbl">${m.lbl}</div>
-          <div class="day-macro-pct" style="color:${m.pct>=90&&m.pct<=110?'var(--green)':m.pct>=75?'var(--amber)':'var(--orange)'}">${m.pct}%</div>
-        </div>`).join('')}
-      </div>
-      <div class="day-meals" id="meals-${idx}">
-        ${day.meals.map(m => `<div class="day-meal-item"><span class="day-meal-name">${m.name}</span><span class="day-meal-cal">${m.cal} kcal</span></div>`).join('')}
-      </div>
-    </div>`;
-  });
-
-  container.innerHTML = html;
 }
 
 function toggleDay(idx) {
