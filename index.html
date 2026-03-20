@@ -19,12 +19,12 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; max-width: 430px; margin: 0 auto; }
- 
+
 /* NAV TABS */
 .tab-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; position: sticky; top: 0; z-index: 20; }
 .tab-btn { flex: 1; padding: 0.875rem 0.5rem; border: none; background: none; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
 .tab-btn.active { color: var(--text); border-bottom-color: var(--text); }
- 
+
 /* HEADER */
 .header { background: var(--surface); padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .header-left { display: flex; align-items: center; gap: 10px; }
@@ -32,11 +32,11 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .header-title { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
 .header-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
 .date-badge { font-size: 12px; color: var(--text2); background: var(--surface2); padding: 5px 10px; border-radius: 20px; font-weight: 500; }
- 
+
 /* PAGES */
 .page { display: none; }
 .page.active { display: block; }
- 
+
 /* MACRO SECTION */
 .macro-section { padding: 1.25rem 1.25rem 0.75rem; }
 .calorie-hero { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow-sm); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
@@ -63,7 +63,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .mpill-bar { height: 3px; background: var(--surface2); border-radius: 3px; margin-top: 8px; overflow: hidden; }
 .mpill-fill { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
 .protein .mpill-fill { background: var(--green); } .carbs .mpill-fill { background: var(--blue); } .fat .mpill-fill { background: var(--amber); }
- 
+
 /* CHECK SECTION */
 .check-section { padding: 0 1.25rem; margin-top: 0.25rem; }
 .section-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
@@ -107,7 +107,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .log-meal-btn { width: 100%; padding: 14px; border: none; background: var(--text); color: #fff; font-size: 14px; font-family: inherit; font-weight: 500; cursor: pointer; }
 .log-meal-btn:active { background: #333; }
 .error-banner { display: none; background: var(--orange-light); border: 1px solid #fac9b0; border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 13px; color: var(--orange); margin-top: 0.75rem; }
- 
+
 /* LOG SECTION */
 .log-section { padding: 0 1.25rem; margin-top: 1.5rem; display: none; }
 .log-list { display: flex; flex-direction: column; gap: 6px; }
@@ -116,16 +116,16 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .log-name { flex: 1; font-size: 13px; font-weight: 500; }
 .log-cals { font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
 .log-remove { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 17px; line-height: 1; padding: 2px 4px; }
- 
+
 /* FINISH DAY BUTTON */
 .finish-day-wrap { padding: 1.25rem 1.25rem 0; }
 .finish-day-btn { width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm); background: var(--green); color: #fff; font-size: 14px; font-family: inherit; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; }
 .finish-day-btn:active { transform: scale(0.98); background: #228a5e; }
- 
+
 /* BOTTOM */
 .bottom { padding: 1rem 1.25rem 3rem; text-align: center; }
 .reset-btn { background: none; border: none; color: var(--text3); font-size: 12px; cursor: pointer; font-family: inherit; padding: 6px 12px; }
- 
+
 /* HISTORY PAGE */
 .history-header { padding: 1.25rem 1.25rem 0.75rem; }
 .history-header h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
@@ -155,7 +155,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .day-meal-cal { color: var(--text2); font-family: 'DM Mono', monospace; font-size: 12px; }
 .day-chevron { color: var(--text3); font-size: 16px; transition: transform 0.2s; }
 .day-chevron.open { transform: rotate(180deg); }
- 
+
 /* SETTINGS */
 .settings-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 12px; }
 .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); gap: 16px; }
@@ -167,7 +167,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 .save-goals-btn:active { transform: scale(0.98); background: #333; }
 .settings-saved { text-align: center; font-size: 13px; color: var(--green); font-weight: 500; margin-top: 10px; opacity: 0; transition: opacity 0.3s; }
 .settings-saved.show { opacity: 1; }
- 
+
 .streak-banner { margin: 0 1.25rem 1rem; background: var(--surface); border-radius: var(--radius-sm); padding: 1rem 1.25rem; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px; }
 .streak-icon { font-size: 28px; }
 .streak-text { flex: 1; }
@@ -176,13 +176,13 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
 </style>
 </head>
 <body>
- 
+
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showPage('today')">Today</button>
   <button class="tab-btn" onclick="showPage('history')">History</button>
   <button class="tab-btn" onclick="showPage('settings')">Goals</button>
 </div>
- 
+
 <!-- TODAY PAGE -->
 <div class="page active" id="page-today">
   <div class="header">
@@ -195,7 +195,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
     </div>
     <div class="date-badge" id="dateBadge"></div>
   </div>
- 
+
   <div class="macro-section">
     <div class="calorie-hero">
       <div class="calorie-left">
@@ -215,7 +215,7 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
     </div>
     <div class="macros-row" id="macrosRow"></div>
   </div>
- 
+
   <div class="check-section">
     <div class="section-label">Check a food</div>
     <button class="photo-btn" onclick="document.getElementById('fileInput').click()">
@@ -251,21 +251,21 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
       <button class="log-meal-btn" onclick="logCurrentFood()">+ Log this meal</button>
     </div>
   </div>
- 
+
   <div class="log-section" id="logSection">
     <div class="section-label">Today's meals</div>
     <div class="log-list" id="logList"></div>
   </div>
- 
+
   <div class="finish-day-wrap" id="finishDayWrap" style="display:none">
     <button class="finish-day-btn" onclick="finishDay()">✓ Finish today's log</button>
   </div>
- 
+
   <div class="bottom">
     <button class="reset-btn" onclick="resetDay()">Reset today's log</button>
   </div>
 </div>
- 
+
 <!-- SETTINGS PAGE -->
 <div class="page" id="page-settings">
   <div class="history-header">
@@ -314,15 +314,15 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
   </div>
   <div id="historyContent"></div>
 </div>
- 
+
 <script>
 let TARGETS = { cal: 2010, protein: 180, carbs: 165, fat: 70 };
- 
+
 function loadGoals() {
   const saved = localStorage.getItem('macro_targets');
   if (saved) TARGETS = JSON.parse(saved);
 }
- 
+
 function saveGoals() {
   const cal = parseInt(document.getElementById('set-cal').value);
   const protein = parseInt(document.getElementById('set-protein').value);
@@ -338,7 +338,7 @@ function saveGoals() {
   setTimeout(() => saved.classList.remove('show'), 2500);
   renderMacros();
 }
- 
+
 function populateSettings() {
   document.getElementById('set-cal').value = TARGETS.cal;
   document.getElementById('set-protein').value = TARGETS.protein;
@@ -348,7 +348,7 @@ function populateSettings() {
 let consumed = { cal: 0, protein: 0, carbs: 0, fat: 0 };
 let log = [];
 let pendingFood = null;
- 
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -357,7 +357,7 @@ function showPage(name) {
   if (name === 'history') renderHistory();
   if (name === 'settings') populateSettings();
 }
- 
+
 function init() {
   loadGoals();
   const now = new Date();
@@ -369,7 +369,7 @@ function init() {
   }
   renderMacros(); renderLog();
 }
- 
+
 function renderMacros() {
   const calRem = TARGETS.cal - consumed.cal;
   const pct = Math.min(100, Math.round((consumed.cal / TARGETS.cal) * 100));
@@ -399,7 +399,7 @@ function renderMacros() {
     </div>`;
   }).join('');
 }
- 
+
 function renderLog() {
   const sec = document.getElementById('logSection');
   const wrap = document.getElementById('finishDayWrap');
@@ -409,18 +409,18 @@ function renderLog() {
     `<div class="log-item"><div class="log-dot"></div><div class="log-name">${item.name}</div><div class="log-cals">${item.cal} kcal</div><button class="log-remove" onclick="removeLog(${i})">×</button></div>`
   ).join('');
 }
- 
+
 function removeLog(i) {
   const it = log[i];
   consumed.cal -= it.cal; consumed.protein -= it.protein; consumed.carbs -= it.carbs; consumed.fat -= it.fat;
   log.splice(i, 1); saveLog(); renderMacros(); renderLog();
 }
- 
+
 function saveLog() {
   localStorage.setItem('macro_log_today', JSON.stringify(log));
   localStorage.setItem('macro_log_date', new Date().toDateString());
 }
- 
+
 function finishDay() {
   if (!log.length) return;
   if (!confirm('Mark today as done? This will save it to your history and clear today\'s log.')) return;
@@ -443,9 +443,14 @@ function finishDay() {
   renderMacros(); renderLog();
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('previewImg').style.display = 'none';
-  alert('Day saved! Check your History tab.');
+  // Switch to history tab and render it
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-history').classList.add('active');
+  document.querySelectorAll('.tab-btn')[1].classList.add('active');
+  renderHistory();
 }
- 
+
 function renderHistory() {
   const history = JSON.parse(localStorage.getItem('macro_history') || '[]');
   const container = document.getElementById('historyContent');
@@ -453,7 +458,7 @@ function renderHistory() {
     container.innerHTML = '<div class="history-empty"><div class="empty-icon">📅</div><div>No completed days yet.<br>Finish your first day to see it here.</div></div>';
     return;
   }
- 
+
   // Streak calc
   let streak = 0;
   const today = new Date().toDateString();
@@ -468,12 +473,12 @@ function renderHistory() {
       if (diff === 1) streak++; else break;
     } else break;
   }
- 
+
   let html = '';
   if (streak > 0) {
     html += `<div class="streak-banner"><div class="streak-icon">🔥</div><div class="streak-text"><div class="streak-num">${streak} day streak</div><div class="streak-lbl">Keep it going!</div></div></div>`;
   }
- 
+
   history.forEach((day, idx) => {
     const badge = day.avgPct >= 90 && day.avgPct <= 110 ? { cls: 'great', txt: '✓ On target' } :
                   day.avgPct >= 75 ? { cls: 'good', txt: '~ Close' } :
@@ -506,17 +511,17 @@ function renderHistory() {
       </div>
     </div>`;
   });
- 
+
   container.innerHTML = html;
 }
- 
+
 function toggleDay(idx) {
   const meals = document.getElementById('meals-' + idx);
   const chev = document.getElementById('chev-' + idx);
   meals.classList.toggle('open');
   chev.classList.toggle('open');
 }
- 
+
 function showLoading(msg) {
   document.getElementById('loadingWrap').style.display = 'block';
   document.getElementById('loadingText').textContent = msg;
@@ -525,7 +530,7 @@ function showLoading(msg) {
 }
 function hideLoading() { document.getElementById('loadingWrap').style.display = 'none'; }
 function showError(msg) { const b = document.getElementById('errorBanner'); b.textContent = msg; b.style.display = 'block'; }
- 
+
 async function analyseText() {
   const text = document.getElementById('foodText').value.trim();
   if (!text) return;
@@ -533,7 +538,7 @@ async function analyseText() {
   showLoading('Checking that food…');
   await callClaude(null, text);
 }
- 
+
 async function handlePhoto(input) {
   const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
@@ -545,7 +550,7 @@ async function handlePhoto(input) {
   };
   reader.readAsDataURL(file);
 }
- 
+
 async function callClaude(imageBase64, textDesc) {
   const rem = { cal: TARGETS.cal - consumed.cal, protein: TARGETS.protein - consumed.protein, carbs: TARGETS.carbs - consumed.carbs, fat: TARGETS.fat - consumed.fat };
   const sys = `You are a macro nutrition assistant. Daily targets: ${TARGETS.cal} cal, ${TARGETS.protein}g protein, ${TARGETS.carbs}g carbs, ${TARGETS.fat}g fat. Remaining today: ${rem.cal} cal, ${rem.protein}g protein, ${rem.carbs}g carbs, ${rem.fat}g fat. Respond ONLY with valid JSON, no markdown: {"name":"short food name","verdict":"yes|no|maybe","cal":number,"protein":number,"carbs":number,"fat":number,"summary":"2-3 direct sentences. Does it fit? What to watch. Smarter alternatives if not.","portion":"estimated portion size"}`;
@@ -560,7 +565,7 @@ async function callClaude(imageBase64, textDesc) {
     hideLoading(); showResult(json);
   } catch(err) { hideLoading(); showError('Could not analyse — ' + err.message); }
 }
- 
+
 function showResult(food) {
   pendingFood = food;
   const cfg = { yes:{icon:'✓',text:'Fits your macros',cls:'yes'}, no:{icon:'✗',text:"Doesn't fit today",cls:'no'}, maybe:{icon:'~',text:'Fits with adjustments',cls:'maybe'} }[food.verdict] || {icon:'~',text:'Check details',cls:'maybe'};
@@ -576,7 +581,7 @@ function showResult(food) {
   if (food.portion) { portEl.textContent = 'Est. portion: ' + food.portion; portEl.style.display = 'inline-block'; } else { portEl.style.display = 'none'; }
   document.getElementById('resultCard').style.display = 'block';
 }
- 
+
 function logCurrentFood() {
   if (!pendingFood) return;
   log.push({name:pendingFood.name,cal:pendingFood.cal,protein:pendingFood.protein,carbs:pendingFood.carbs,fat:pendingFood.fat});
@@ -588,7 +593,7 @@ function logCurrentFood() {
   document.getElementById('fileInput').value = '';
   saveLog(); renderMacros(); renderLog();
 }
- 
+
 function resetDay() {
   if (!confirm("Reset all of today's logged meals?")) return;
   log = []; consumed = {cal:0,protein:0,carbs:0,fat:0};
@@ -597,7 +602,7 @@ function resetDay() {
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('previewImg').style.display = 'none';
 }
- 
+
 init();
 </script>
 </body>
