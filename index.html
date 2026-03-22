@@ -306,6 +306,11 @@ body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg);
     <button class="save-goals-btn" onclick="saveGoals()">Save goals</button>
     <div class="settings-saved" id="settingsSaved">✓ Goals saved!</div>
     <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:1rem;line-height:1.6;">Changes apply immediately to today's tracker.<br>Past history keeps its original targets.</p>
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);text-align:center;">
+      <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">Food cache</div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:0.75rem;line-height:1.5;">Foods you've checked are saved locally so they return consistent results instantly. Clear if you want fresh lookups.</p>
+      <button onclick="clearFoodCache()" style="padding:10px 20px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;" id="clearCacheBtn">Clear food cache</button>
+    </div>
   </div>
 </div>
 <div class="page" id="page-history">
@@ -524,10 +529,64 @@ function showLoading(msg) {
 function hideLoading() { document.getElementById('loadingWrap').style.display = 'none'; }
 function showError(msg) { const b = document.getElementById('errorBanner'); b.textContent = msg; b.style.display = 'block'; }
 
+// Food cache — stores nutritional data permanently, recalculates verdict fresh each time
+function getCacheKey(text) {
+  return 'food_cache_' + text.toLowerCase().trim().replace(/\s+/g, '_');
+}
+
+function getFromCache(text) {
+  try {
+    const key = getCacheKey(text);
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function saveToCache(text, data) {
+  try {
+    const key = getCacheKey(text);
+    // Only cache text lookups (not photos — every photo is different)
+    localStorage.setItem(key, JSON.stringify({ name: data.name, cal: data.cal, protein: data.protein, carbs: data.carbs, fat: data.fat, portion: data.portion }));
+  } catch(e) {}
+}
+
+function calcVerdict(food) {
+  const rem = { cal: TARGETS.cal - consumed.cal, protein: TARGETS.protein - consumed.protein, carbs: TARGETS.carbs - consumed.carbs, fat: TARGETS.fat - consumed.fat };
+  const calOk = food.cal <= rem.cal;
+  const proOk = food.protein <= rem.protein;
+  const carbOk = food.carbs <= rem.carbs;
+  const fatOk = food.fat <= rem.fat;
+  const allOk = calOk && proOk && carbOk && fatOk;
+  const someOk = calOk || proOk;
+  if (allOk) return 'yes';
+  if (someOk && food.cal <= rem.cal * 1.15) return 'maybe';
+  return 'no';
+}
+
 async function analyseText() {
   const text = document.getElementById('foodText').value.trim();
   if (!text) return;
   document.getElementById('previewImg').style.display = 'none';
+  document.getElementById('errorBanner').style.display = 'none';
+
+  // Check cache first
+  const cached = getFromCache(text);
+  if (cached) {
+    showLoading('Found in your food history…');
+    setTimeout(() => {
+      hideLoading();
+      const verdict = calcVerdict(cached);
+      const rem = { cal: TARGETS.cal - consumed.cal, protein: TARGETS.protein - consumed.protein, carbs: TARGETS.carbs - consumed.carbs, fat: TARGETS.fat - consumed.fat };
+      const summary = verdict === 'yes'
+        ? `Fits your remaining macros (${rem.cal} cal left). Cached result.`
+        : verdict === 'maybe'
+        ? `Tight fit — check your remaining calories carefully. Cached result.`
+        : `Exceeds your remaining macros (${rem.cal} cal left). Cached result.`;
+      showResult({ ...cached, verdict, summary });
+    }, 300);
+    return;
+  }
+
   showLoading('Checking that food…');
   await callClaude(null, text);
 }
@@ -555,6 +614,8 @@ async function callClaude(imageBase64, textDesc) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Something went wrong');
     const json = JSON.parse(data.result.replace(/```json|```/g,'').trim());
+    // Cache text lookups only
+    if (!imageBase64 && textDesc) saveToCache(textDesc, json);
     hideLoading(); showResult(json);
   } catch(err) { hideLoading(); showError('Could not analyse — ' + err.message); }
 }
@@ -585,6 +646,14 @@ function logCurrentFood() {
   document.getElementById('foodText').value = '';
   document.getElementById('fileInput').value = '';
   saveLog(); renderMacros(); renderLog();
+}
+
+function clearFoodCache() {
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('food_cache_'));
+  keys.forEach(k => localStorage.removeItem(k));
+  const btn = document.getElementById('clearCacheBtn');
+  btn.textContent = '✓ Cleared ' + keys.length + ' item' + (keys.length !== 1 ? 's' : '');
+  setTimeout(() => { btn.textContent = 'Clear food cache'; }, 2500);
 }
 
 function resetDay() {
