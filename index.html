@@ -718,7 +718,11 @@ function addChatBubble(text, type) {
   return div;
 }
  
+// Store planner meals by uid so buttons don't need inline JSON
+const plannerMealMap = {};
+ 
 function renderPlannerCard(meal, uid) {
+  plannerMealMap[uid] = meal;
   const cfg = {yes:{icon:'✓',text:'Fits your macros',cls:'yes'},no:{icon:'✗',text:"Doesn't fit today",cls:'no'},maybe:{icon:'~',text:'Fits with adjustments',cls:'maybe'}}[meal.verdict]||{icon:'~',text:'Check details',cls:'maybe'};
   const card = document.createElement('div');
   card.className = 'meal-card';
@@ -733,32 +737,35 @@ function renderPlannerCard(meal, uid) {
     </div>
     ${meal.portion ? `<div style="padding:8px 1.25rem;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;border-bottom:1px solid var(--border);">Est. portion: ${meal.portion}</div>` : ''}
     <div class="meal-card-action-row">
-      <button class="meal-action-btn" id="save_${uid}" onclick="savePlannerMeal('${uid}', ${JSON.stringify(meal).replace(/'/g,"&#39;")})">☆ Save to quick meals</button>
-      <button class="meal-action-btn primary" onclick="addPlannerMeal('${uid}', ${JSON.stringify(meal).replace(/'/g,"&#39;")})">+ Add to today</button>
+      <button class="meal-action-btn" id="save_${uid}" onclick="savePlannerMeal('${uid}')">☆ Save to quick meals</button>
+      <button class="meal-action-btn primary" id="add_${uid}" onclick="addPlannerMeal('${uid}')">+ Add to today</button>
     </div>`;
   document.getElementById('plannerCards').appendChild(card);
   card.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
  
-function savePlannerMeal(uid, meal) {
+function savePlannerMeal(uid) {
+  const meal = plannerMealMap[uid];
+  if (!meal) return;
   const saved = saveQuickMeal(meal);
   const btn = document.getElementById('save_'+uid);
   if (btn) { btn.textContent = saved ? '✓ Saved!' : '✓ Already saved'; btn.classList.add('saved-state'); }
   renderQuickMeals(); renderPlannerQuickMeals();
 }
  
-function addPlannerMeal(uid, meal) {
+function addPlannerMeal(uid) {
+  const meal = plannerMealMap[uid];
+  if (!meal) return;
   logMeal(meal);
-  const card = document.getElementById('mc_'+uid);
-  if (card) {
-    const addBtn = card.querySelector('.meal-action-btn.primary');
-    if (addBtn) { addBtn.textContent = '✓ Added'; addBtn.style.background='var(--green)'; }
-    // Recalculate verdict on remaining cards
-    document.querySelectorAll('.meal-card').forEach(c => {
+  const addBtn = document.getElementById('add_'+uid);
+  if (addBtn) { addBtn.textContent = '✓ Added'; addBtn.style.background='var(--green)'; }
+  // Fade other cards slightly to show macros have changed
+  document.querySelectorAll('.meal-card').forEach(c => {
+    if (c.id !== 'mc_'+uid) {
       const verdictEl = c.querySelector('.meal-card-verdict');
-      if (verdictEl && c.id !== 'mc_'+uid) verdictEl.style.opacity='0.6';
-    });
-  }
+      if (verdictEl) verdictEl.style.opacity = '0.6';
+    }
+  });
 }
  
 // ── FINISH DAY ────────────────────────────────────
