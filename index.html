@@ -679,8 +679,8 @@ When suggesting specific meals or foods, ALWAYS include a JSON block in your res
 Keep your conversational response short (1-2 sentences). Then list meal suggestions as meal tags. Include 2-4 meal options when asked for suggestions. Be practical and specific — real foods, real portions.`;
  
   try {
-    const messages = chatHistory.slice(-10).map(m => ({ role:m.role, content:m.content }));
-    const res = await fetch('/api/analyse', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:sys, content:messages.length?messages:[{role:'user',content:text}]}) });
+    const messages = chatHistory.slice(-10).map(m => ({ role: m.role, content: [{ type: 'text', text: typeof m.content === 'string' ? m.content : m.content }] }));
+    const res = await fetch('/api/analyse', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:sys, content: messages}) });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error||'Error');
     const reply = data.result;
@@ -857,4 +857,3 @@ init();
 </script>
 </body>
 </html>
- 
