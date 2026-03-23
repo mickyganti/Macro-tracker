@@ -4,6 +4,12 @@ export default async function handler(req, res) {
   const { system, content } = req.body;
   if (!system || !content) return res.status(400).json({ error: 'Missing required fields' });
  
+  // content can be either:
+  // - a single-turn array of content blocks: [{type:'text',text:'...'}]
+  // - a multi-turn messages array: [{role:'user',content:[...]}, {role:'assistant',content:[...]}]
+  const isMultiTurn = Array.isArray(content) && content.length > 0 && content[0].role;
+  const messages = isMultiTurn ? content : [{ role: 'user', content }];
+ 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -17,7 +23,7 @@ export default async function handler(req, res) {
         max_tokens: 2000,
         temperature: 0,
         system,
-        messages: [{ role: 'user', content }],
+        messages,
       }),
     });
  
